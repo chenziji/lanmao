@@ -60,5 +60,7 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
         Playing_AI.game_state = 1;
         GameObject temp = GameObject.Find("Playing");
         temp.SendMessage("Init");
+
+        Playing_AI.m_Success = 0;
     }
 }

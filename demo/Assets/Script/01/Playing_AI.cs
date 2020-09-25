@@ -10,22 +10,37 @@ public class Playing_AI : MonoBehaviour
     public static int gb_prefab_Num = 18;   //预设数量
     public static int gb_playing_Num = 64;  //游戏对象数量
 
+    public static int iReverseA = 0;  //A翻转的ID
+    public static int iReverseB = 0;  //B翻转的ID
+    public static GameObject gb_ReverseA;  //A翻转的对象
+    public static GameObject gb_ReverseB;  //B翻转的对象
+
+    public static int m_Success = 0;   //成功的个数
+
     int m_per_line_num = 8;    //每排数量
-    int posx = 320, posy = 50; //初始坐标
-    int wight = 80, hight = 80; //单个元素宽高间隔
-    IList<int> listRandom = new List<int>(gb_playing_Num);
+    float posx = 0, posy = 0; //初始坐标
+    float wight = 55, hight = 55; //单个元素宽高间隔
+    IList<int> listRandom = new List<int>(gb_playing_Num);  //随机表
 
     private GameObject gb_GameObject_father;//父类
     private GameObject[] gb_playing_prefad;//预设
     private GameObject[] gb_playing;//实例
+    private GameObject gb_GameObject_BG;//背景图
+
+    string str1 = "";
+    string str2 = "Sprite_";
+    string str = "";
+
     // Start is called before the first frame update
     void Start()
     {
-        gb_playing_prefad = new GameObject[gb_playing_Num];
+        //Screen.SetResolution(640, 960, false);
 
-        string str1 = "";
-        string str2 = "Sprite_";
-        string str = "";
+        gb_GameObject_BG = GameObject.Find("main");
+        posx = gb_GameObject_BG.transform.position.x - 190;
+        posy = gb_GameObject_BG.transform.position.y - 205;
+
+        gb_playing_prefad = new GameObject[gb_playing_Num];
 
         //预设初始化显示false
         for (int i = 1; i <= gb_prefab_Num; ++i)
@@ -63,9 +78,47 @@ public class Playing_AI : MonoBehaviour
 
         if (game_state == 1)
         {
-           
-        }
+            if (gb_ReverseA && gb_ReverseB)
+            {
+                if (iReverseA != 0 && iReverseB != 0 )
+                {
+                    if (iReverseA != iReverseB)
+                    {
+                        gb_ReverseA.GetComponent<Perfab_01>().bEnd = true;
+                        gb_ReverseB.GetComponent<Perfab_01>().bEnd = true;
+                        //延迟
+                        //Invoke("Back", 0.5f);
+                        //没有翻转到同一个
 
+                        //Invoke("Back2", 1.0f);
+                    }
+                    else
+                    {
+                        ++m_Success;
+                        if(m_Success == gb_playing_Num)
+                        {
+                            GameEnd();
+                        }
+                    }
+                    iReverseA = 0;
+                    iReverseB = 0;
+                    gb_ReverseA = null;
+                    gb_ReverseB = null;
+                }
+            }  
+        }
+    }
+
+    void Back()
+    {
+        gb_ReverseA.GetComponent<Perfab_01>().bEnd = true;
+        gb_ReverseB.GetComponent<Perfab_01>().bEnd = true;
+    }
+
+    void Back2()
+    {
+        iReverseA = 0;
+        iReverseB = 0;
     }
 
     void Init()
@@ -76,7 +129,7 @@ public class Playing_AI : MonoBehaviour
         //添加随机数组
         for (int i = 1; i <= gb_playing_Num; ++i)
         {
-            listRandom.Add(i);  
+            listRandom.Add(i);
         }
 
         int w = 0, h = 0;
@@ -104,7 +157,7 @@ public class Playing_AI : MonoBehaviour
                 //计算排数x,y
                 if (irand % m_per_line_num == 0)
                 {
-                    h = irand / m_per_line_num; 
+                    h = irand / m_per_line_num;
                 }
                 else
                 {
@@ -125,12 +178,17 @@ public class Playing_AI : MonoBehaviour
                 gb_playing[irand - 1] = Instantiate<GameObject>(gb_playing_prefad[prefabNum]);
                 if (gb_playing[irand - 1])
                 {
-                    gb_playing[irand - 1].transform.SetParent(gb_GameObject_father.transform.parent);
-                    gb_playing[irand - 1].transform.position = new Vector3(posx + w * wight, posy + h * hight, -200);
+                    gb_playing[irand - 1].transform.SetParent(gb_GameObject_father.transform);
+                    gb_playing[irand - 1].transform.position = new Vector3(posx + w * wight, posy + h * hight, 0);
                     gb_playing[irand - 1].SetActive(true);
-                    gb_playing[irand - 1].GetComponent<Image>().material = null;
+                   // gb_playing[irand - 1].GetComponent<Image>().material = null;
                 }
             }
         }
+    }
+
+    void GameEnd()
+    {
+
     }
 }
