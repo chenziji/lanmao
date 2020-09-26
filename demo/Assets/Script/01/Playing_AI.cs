@@ -19,13 +19,24 @@ public class Playing_AI : MonoBehaviour
 
     int m_per_line_num = 8;    //每排数量
     float posx = 0, posy = 0; //初始坐标
-    float wight = 55, hight = 55; //单个元素宽高间隔
+    float wight = 51, hight = 51; //单个元素宽高间隔
     IList<int> listRandom = new List<int>(gb_playing_Num);  //随机表
 
     private GameObject gb_GameObject_father;//父类
     private GameObject[] gb_playing_prefad;//预设
     private GameObject[] gb_playing;//实例
-    private GameObject gb_GameObject_BG;//背景图
+
+    //其他对象
+    public GameObject gb_bt_PlayBegin;
+    public GameObject gb_bt_HowToPlay;
+    public GameObject gb_bt_PlayMoreGame;
+    public GameObject gb_bt_PlayAgain;
+    public GameObject gb_bt_PlayMoreEnd;
+    public GameObject gb_bt_Reset;
+
+    public GameObject gb_UI_Main;
+    public GameObject gb_UI_Playing;
+    public GameObject gb_UI_End;
 
     string str1 = "";
     string str2 = "Sprite_";
@@ -36,9 +47,31 @@ public class Playing_AI : MonoBehaviour
     {
         //Screen.SetResolution(640, 960, false);
 
-        gb_GameObject_BG = GameObject.Find("main");
-        posx = gb_GameObject_BG.transform.position.x - 190;
-        posy = gb_GameObject_BG.transform.position.y - 205;
+        gb_bt_PlayBegin = GameObject.Find("main_play");
+        gb_bt_HowToPlay = GameObject.Find("main_howtoplay");
+        gb_bt_PlayMoreGame = GameObject.Find("main_play_more_game");
+        gb_bt_PlayAgain = GameObject.Find("end_play_again");
+        gb_bt_PlayMoreEnd = GameObject.Find("end_play_more");
+        gb_bt_Reset = GameObject.Find("reset");
+
+        gb_UI_Main = GameObject.Find("main");
+        gb_UI_Playing = GameObject.Find("playing");
+        gb_UI_End = GameObject.Find("end");
+
+        gb_UI_Playing.SetActive(false);
+        gb_UI_End.SetActive(false);
+        gb_bt_PlayAgain.SetActive(false);
+        gb_bt_PlayMoreEnd.SetActive(false);
+        gb_bt_Reset.SetActive(false);
+
+        if (gb_UI_Playing)
+        {
+            gb_UI_Playing.SetActive(false);
+        }
+
+
+        posx = gb_UI_Main.transform.position.x - 175;
+        posy = gb_UI_Main.transform.position.y - 185;
 
         gb_playing_prefad = new GameObject[gb_playing_Num];
 
@@ -84,46 +117,45 @@ public class Playing_AI : MonoBehaviour
                 {
                     if (iReverseA != iReverseB)
                     {
+                        //没有翻转到同一个
                         gb_ReverseA.GetComponent<Perfab_01>().bEnd = true;
                         gb_ReverseB.GetComponent<Perfab_01>().bEnd = true;
-                        //延迟
-                        //Invoke("Back", 0.5f);
-                        //没有翻转到同一个
-
-                        //Invoke("Back2", 1.0f);
                     }
                     else
                     {
+                        //翻转到同一个
+
+                        //播放特效 大约0.5s
+                        Effect();
+
                         ++m_Success;
-                        if(m_Success == gb_playing_Num)
+                        if(m_Success >= gb_playing_Num)
                         {
-                            GameEnd();
+                            //全部翻盘，结束游戏 //延迟播放特效 大约0.5s
+                            Invoke("GameEnd", 0.5f);
+                            game_state = 0;
+                            return;
                         }
                     }
-                    iReverseA = 0;
-                    iReverseB = 0;
-                    gb_ReverseA = null;
-                    gb_ReverseB = null;
+                    Playing_AI.iReverseA = 0;
+                    Playing_AI.iReverseB = 0;
+                    Playing_AI.gb_ReverseA = null;
+                    Playing_AI.gb_ReverseB = null;
                 }
             }  
         }
     }
 
-    void Back()
+    void Effect()
     {
-        gb_ReverseA.GetComponent<Perfab_01>().bEnd = true;
-        gb_ReverseB.GetComponent<Perfab_01>().bEnd = true;
+
     }
 
-    void Back2()
-    {
-        iReverseA = 0;
-        iReverseB = 0;
-    }
-
-    void Init()
+    public void Init()
     {
         gb_GameObject_father = GameObject.Find("GameObject");
+        gb_bt_Reset.SetActive(true);
+
         gb_playing = new GameObject[gb_playing_Num];
 
         //添加随机数组
@@ -189,6 +221,40 @@ public class Playing_AI : MonoBehaviour
 
     void GameEnd()
     {
+        //显示结束UI
+        gb_UI_End.SetActive(true);
+        //显示button
+        gb_bt_PlayAgain.SetActive(true);
+        gb_bt_PlayMoreEnd.SetActive(true);
+        //隐藏所有游戏对象
+        for (int i = 0; i < gb_playing_Num; ++i)
+        {
+            Destroy(gb_playing[i]);
+        }
+       
+        //隐藏UI
+        gb_UI_Playing.SetActive(false);
+        gb_bt_Reset.SetActive(false);
+    }
 
+    public void GameReset()
+    {
+        //显示隐藏UI
+        gb_UI_Playing.SetActive(false);
+        gb_UI_End.SetActive(false);
+        gb_UI_Main.SetActive(true);
+        //显示隐藏button
+        gb_bt_PlayAgain.SetActive(false);
+        gb_bt_PlayMoreEnd.SetActive(false);
+        gb_bt_PlayBegin.SetActive(true);
+        gb_bt_PlayMoreGame.SetActive(true);
+        gb_bt_HowToPlay.SetActive(true);
+        gb_bt_Reset.SetActive(false);
+
+        //隐藏所有游戏对象
+        for (int i = 0; i < gb_playing_Num; ++i)
+        {
+            Destroy(gb_playing[i]);
+        }
     }
 }

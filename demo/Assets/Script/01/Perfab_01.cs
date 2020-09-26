@@ -65,6 +65,7 @@ public class Perfab_01 : MonoBehaviour, IPointerDownHandler
         }
         else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0)
         {
+            //延迟0.5秒
             Invoke("Invoke", 0.5f);
             Playing_AI.iReverseB = _Num;
         }
