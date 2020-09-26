@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Perfab_01 : MonoBehaviour, IPointerDownHandler
+public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     bool bBegin = false;
     public bool bEnd = false;
@@ -38,8 +38,22 @@ public class Perfab_01 : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+        this.GetComponent<Image>().sprite = Resources.Load<Sprite>("picture/01/A00icon");
+    }
+
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        this.GetComponent<Image>().sprite = Resources.Load<Sprite>("picture/01/A00");
+    }
+
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
+        if(bEnd)
+        {
+            return;
+        }
         if(Playing_AI.iReverseA != 0 && Playing_AI.iReverseB != 0)
         {
             return;
@@ -58,12 +72,12 @@ public class Perfab_01 : MonoBehaviour, IPointerDownHandler
 
         bBegin = true;
 
-        if (Playing_AI.iReverseA == 0)
+        if (Playing_AI.iReverseA == 0 && Playing_AI.gb_ReverseA == null)
         {
             Playing_AI.gb_ReverseA = gameObject;
             Playing_AI.iReverseA = _Num;
         }
-        else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0)
+        else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0 && Playing_AI.gb_ReverseB == null)
         {
             //延迟0.5秒
             Invoke("Invoke", 0.5f);
@@ -97,7 +111,7 @@ public class Perfab_01 : MonoBehaviour, IPointerDownHandler
             {
                 this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPicture);
             }
-                
+
             /*else
             {
                 float temp = this.transform.position.z;
@@ -124,7 +138,7 @@ public class Perfab_01 : MonoBehaviour, IPointerDownHandler
 
         if (this.transform.eulerAngles.y != 0)
         {
-            if (this.transform.localEulerAngles.y <= 1)
+            if (this.transform.localEulerAngles.y >= 359)
             {
                 this.transform.eulerAngles = new Vector3(this.transform.rotation.x, 0, this.transform.rotation.z);
 
@@ -136,6 +150,7 @@ public class Perfab_01 : MonoBehaviour, IPointerDownHandler
             {
                 this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPictureBack);
             }
+
             /*else
             {
                 float temp = this.transform.position.z;
