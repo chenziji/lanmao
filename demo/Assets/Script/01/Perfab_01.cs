@@ -80,7 +80,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0 && Playing_AI.gb_ReverseB == null)
         {
             //延迟0.5秒
-            Invoke("Invoke", 0.5f);
+            Invoke("Invoke", 0.65f);
             Playing_AI.iReverseB = _Num;
         }
 
@@ -95,7 +95,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         //翻转
         //慢慢旋转到指定角度
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 10);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 8);
 
         if (this.transform.eulerAngles.y != 180)
         {
@@ -104,6 +104,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 this.transform.eulerAngles = new Vector3(this.transform.rotation.x, 180, this.transform.rotation.z);
 
                 bBegin = false;
+                this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPicture);
                 //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 930);
             }
 
@@ -125,6 +126,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else
         {
             bBegin = false;
+            this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPicture);
             //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 930);
         }
     }
@@ -134,7 +136,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //翻转回去
 
         //慢慢旋转到指定角度
-        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotationBack, Time.deltaTime * 10);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotationBack, Time.deltaTime * 8);
 
         if (this.transform.eulerAngles.y != 0)
         {
@@ -143,6 +145,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 this.transform.eulerAngles = new Vector3(this.transform.rotation.x, 0, this.transform.rotation.z);
 
                 bEnd = false;
+                this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPictureBack);
                 //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
                 //this.GetComponent<Image>().material = null;
             }
@@ -164,6 +167,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else
         {
             bEnd = false;
+            this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPictureBack);
             //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
             //this.GetComponent<Image>().material = null;
         }

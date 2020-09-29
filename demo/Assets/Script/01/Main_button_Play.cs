@@ -6,11 +6,14 @@ using UnityEngine.EventSystems;
 
 public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler
 {
+    private GameObject gb_UI_Text_Timer;
+
     // Start is called before the first frame update
     void Start()
     {
-        
-       
+        gb_UI_Text_Timer = GameObject.Find("timer");
+        gb_UI_Text_Timer.SendMessage("Init");
+        gb_UI_Text_Timer.SetActive(false);
     }
 
     // Update is called once per frame
@@ -52,5 +55,9 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
         Playing_AI.iReverseB = 0;
         Playing_AI.gb_ReverseA = null;
         Playing_AI.gb_ReverseB = null;
+
+
+        gb_UI_Text_Timer.SetActive(true);
+        gb_UI_Text_Timer.SendMessage("Begin");
     }
 }

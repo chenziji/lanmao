@@ -67,6 +67,7 @@
     <Compile Include="Assets\Script\01\Main_button_Reset.cs" />
     <Compile Include="Assets\Script\01\Perfab_01.cs" />
     <Compile Include="Assets\Script\01\Playing_AI.cs" />
+    <Compile Include="Assets\Script\01\Timer.cs" />
     <None Include="Assets\resources\Material_And_Shader\01\reversible_face.shader" />
     <Reference Include="Unity.DocZh.Editor">
       <HintPath>G:/lanmao/demo/Library/ScriptAssemblies/Unity.DocZh.Editor.dll</HintPath>

@@ -129,11 +129,10 @@ public class Playing_AI : MonoBehaviour
                         Effect();
 
                         ++m_Success;
-                        if(m_Success >= gb_playing_Num)
+                        if(m_Success >= gb_playing_Num / 2)
                         {
                             //全部翻盘，结束游戏 //延迟播放特效 大约0.5s
                             Invoke("GameEnd", 0.5f);
-                            game_state = 0;
                             return;
                         }
                     }
@@ -170,11 +169,11 @@ public class Playing_AI : MonoBehaviour
         //从数组中随机2个
         while (listRandom.Count > 0)
         {
+            //随机是哪个预设
+            int prefabNum = Random.Range(1, gb_prefab_Num);
+
             for (int num = 0; num < 2; ++num)
             {
-                //随机是哪个预设
-                int prefabNum = Random.Range(1, gb_prefab_Num);
-
                 //从数组中剩余元素随机
                 //随机到索引
                 int index = Random.Range(1, create_playing_left);
@@ -235,6 +234,8 @@ public class Playing_AI : MonoBehaviour
         //隐藏UI
         gb_UI_Playing.SetActive(false);
         gb_bt_Reset.SetActive(false);
+
+        game_state = 0;
     }
 
     public void GameReset()
@@ -256,5 +257,7 @@ public class Playing_AI : MonoBehaviour
         {
             Destroy(gb_playing[i]);
         }
+
+        game_state = 0;
     }
 }
