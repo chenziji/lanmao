@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class Playing_AI : MonoBehaviour
 {
     public static int game_state = 0;   //游戏状态
+
+    public static int game_chick = 0;   //点击次数
+    public static int game_chick_right = 0;   //正确操作次数
+    public static int game_chick_error = 0;   //错误操作次数
 
     public static int gb_prefab_Num = 18;   //预设数量
     public static int gb_playing_Num = 64;  //游戏对象数量
@@ -220,6 +225,8 @@ public class Playing_AI : MonoBehaviour
 
     void GameEnd()
     {
+        Log(true);
+
         //显示结束UI
         gb_UI_End.SetActive(true);
         //显示button
@@ -259,5 +266,44 @@ public class Playing_AI : MonoBehaviour
         }
 
         game_state = 0;
+    }
+
+    public static void Log(bool b)
+    {
+        //Application.dataPath 数据路径
+
+        string path = "GameLog日志";            //默认在工程目录下创建
+        //创建文件夹
+        if (Directory.Exists(path) == false)
+        {
+            //Directory.CreateDirectory(Application.dataPath + "GameLog日志");   //只有当文件不存在的话，创建新文件
+            Directory.CreateDirectory(path);
+        }
+
+        //创建txt
+        //StreamWriter sw = new StreamWriter(Application.dataPath + "GameLog日志//Log_短时记忆01.txt", true);
+        StreamWriter sw = new StreamWriter(path + "//Log_短时记忆01.txt", true);
+
+        GameObject temp = GameObject.Find("timer_begin");
+
+        //开始写入
+        sw.WriteLine("");
+        sw.WriteLine("短时记忆01  " + System.DateTime.Now.ToString());
+        if(b)
+        {
+            sw.WriteLine("类型: 成功");
+        }
+        else
+        {
+            sw.WriteLine("类型: 失败");
+        }
+        sw.WriteLine("点击次数: " + game_chick);
+        sw.WriteLine("用时" + temp.GetComponent<Text>().text);
+        sw.WriteLine("正确操作次数: " + game_chick_right);
+        sw.WriteLine("错误操作次数: " + game_chick_error);
+        //清空缓冲区
+        sw.Flush();
+        //关闭流
+        sw.Close();
     }
 }

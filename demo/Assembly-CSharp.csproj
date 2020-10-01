@@ -67,7 +67,11 @@
     <Compile Include="Assets\Script\01\Main_button_Reset.cs" />
     <Compile Include="Assets\Script\01\Perfab_01.cs" />
     <Compile Include="Assets\Script\01\Playing_AI.cs" />
-    <Compile Include="Assets\Script\01\Timer.cs" />
+    <Compile Include="Assets\Script\01\Text_chick.cs" />
+    <Compile Include="Assets\Script\01\Text_chick_error.cs" />
+    <Compile Include="Assets\Script\01\Text_chick_right.cs" />
+    <Compile Include="Assets\Script\01\Text_Timer.cs" />
+    <Compile Include="Assets\Script\02\Button_短时记忆01.cs" />
     <None Include="Assets\resources\Material_And_Shader\01\reversible_face.shader" />
     <Reference Include="Unity.DocZh.Editor">
       <HintPath>G:/lanmao/demo/Library/ScriptAssemblies/Unity.DocZh.Editor.dll</HintPath>

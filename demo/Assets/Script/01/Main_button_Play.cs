@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler,IPointerDownHandler
 {
     private GameObject gb_UI_Text_Timer;
+    private GameObject gb_UI_Text_chick;
+    private GameObject gb_UI_Text_chick_right;
+    private GameObject gb_UI_Text_chick_error;
 
     // Start is called before the first frame update
     void Start()
@@ -14,6 +17,15 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
         gb_UI_Text_Timer = GameObject.Find("timer");
         gb_UI_Text_Timer.SendMessage("Init");
         gb_UI_Text_Timer.SetActive(false);
+
+        gb_UI_Text_chick = GameObject.Find("chick");
+        gb_UI_Text_chick.SetActive(false);
+
+        gb_UI_Text_chick_right = GameObject.Find("chick_right");
+        gb_UI_Text_chick_right.SetActive(false);
+
+        gb_UI_Text_chick_error = GameObject.Find("chick_error");
+        gb_UI_Text_chick_error.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,11 +56,18 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
         temp.GetComponent<Playing_AI>().gb_bt_HowToPlay.SetActive(false);
         temp.GetComponent<Playing_AI>().gb_bt_PlayMoreGame.SetActive(false);
 
+        //共有函数调用
         temp.GetComponent<Playing_AI>().Init();
 
+        //私有函数调用
         //temp.SendMessage("Init");
 
         Playing_AI.game_state = 1;
+
+        Playing_AI.game_chick = 0;
+        Playing_AI.game_chick_right = 0;
+        Playing_AI.game_chick_error = 0;
+
         Playing_AI.m_Success = 0;
 
         Playing_AI.iReverseA = 0;
@@ -59,5 +78,9 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
 
         gb_UI_Text_Timer.SetActive(true);
         gb_UI_Text_Timer.SendMessage("Begin");
+
+        gb_UI_Text_chick.SetActive(true);
+        gb_UI_Text_chick_right.SetActive(true);
+        gb_UI_Text_chick_error.SetActive(true);
     }
 }

@@ -1,0 +1,83 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Text_Timer : MonoBehaviour
+{
+    private GameObject gb_UI_Text_TimerBegin;
+    float tBegin = 0;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Playing_AI.game_state == 0)
+        {
+            gb_UI_Text_TimerBegin.SetActive(false);
+            this.gameObject.SetActive(false);
+            return;
+        }
+
+        float temp = Time.time - tBegin;
+
+        //当前时间字符串
+        string tempStr = temp.ToString();
+
+        //整数部分
+        string tempStr1 = ((int)temp).ToString();
+        //小数部分，只保留小数点后2位
+        string tempStr2;
+        int index = tempStr.IndexOf(".");
+        if (index == -1)
+        {
+            tempStr2 = tempStr + ".00";
+        }
+        else
+        {
+            if(tempStr.Length - index - 1 < 2)
+            {
+                tempStr2 = tempStr.Substring(index + 1, 1);
+                tempStr2 += "0";
+            }
+            else
+            {
+                tempStr2 = tempStr.Substring(index + 1, 2);
+            }
+
+            /*int Num = 0;
+            int.TryParse(tempStr2, out Num);
+            if (Num < 10)
+            {
+                tempStr2 = "0" + tempStr;
+            }*/
+        }
+
+        tempStr = tempStr1 + "." + tempStr2;
+
+        //分钟
+        int min = (int)(temp / 60);
+        //秒
+        int sec = (int)(temp) - min * 60;
+        tempStr = "时间: " + tempStr + " (" + min + "分" + sec + "秒)";
+        
+
+        gb_UI_Text_TimerBegin.GetComponent<Text>().text = tempStr;
+    }
+
+    void Init()
+    {
+        gb_UI_Text_TimerBegin = GameObject.Find("timer_begin");
+        gb_UI_Text_TimerBegin.SetActive(false);
+    }
+
+    void Begin()
+    {
+        tBegin = Time.time;
+        gb_UI_Text_TimerBegin.SetActive(true);
+    }
+}

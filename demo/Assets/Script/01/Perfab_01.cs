@@ -76,10 +76,21 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         {
             Playing_AI.gb_ReverseA = gameObject;
             Playing_AI.iReverseA = _Num;
+            Playing_AI.game_chick += 1;
         }
         else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0 && Playing_AI.gb_ReverseB == null)
         {
             //延迟0.5秒
+            Playing_AI.game_chick += 1;
+            if(Playing_AI.iReverseA == _Num)
+            {
+                Playing_AI.game_chick_right += 1;
+            }
+            else
+            {
+                Playing_AI.game_chick_error += 1;
+            }
+
             Invoke("Invoke", 0.65f);
             Playing_AI.iReverseB = _Num;
         }
@@ -108,7 +119,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 930);
             }
 
-            if (this.transform.localEulerAngles.y > 250 && this.transform.localEulerAngles.y < 290)
+            if (this.transform.localEulerAngles.y > 240 && this.transform.localEulerAngles.y < 300)
             {
                 this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPicture);
             }
@@ -149,7 +160,7 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 //this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, 0);
                 //this.GetComponent<Image>().material = null;
             }
-            if (this.transform.localEulerAngles.y > 250 && this.transform.localEulerAngles.y < 290)
+            if (this.transform.localEulerAngles.y > 240 && this.transform.localEulerAngles.y < 300)
             {
                 this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPictureBack);
             }
