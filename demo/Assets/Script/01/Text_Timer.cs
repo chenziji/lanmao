@@ -67,6 +67,7 @@ public class Text_Timer : MonoBehaviour
         
 
         gb_UI_Text_TimerBegin.GetComponent<Text>().text = tempStr;
+        Playing_AI.strTime = tempStr;
     }
 
     void Init()

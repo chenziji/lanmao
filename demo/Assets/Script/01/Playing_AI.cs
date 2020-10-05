@@ -22,9 +22,11 @@ public class Playing_AI : MonoBehaviour
 
     public static int m_Success = 0;   //成功的个数
 
+    public static string strTime;   //用时
+
     int m_per_line_num = 8;    //每排数量
     float posx = 0, posy = 0; //初始坐标
-    float wight = 51, hight = 51; //单个元素宽高间隔
+    float wight = 35, hight = 35; //单个元素宽高间隔
     IList<int> listRandom = new List<int>(gb_playing_Num);  //随机表
 
     private GameObject gb_GameObject_father;//父类
@@ -75,8 +77,8 @@ public class Playing_AI : MonoBehaviour
         }
 
 
-        posx = gb_UI_Main.transform.position.x - 175;
-        posy = gb_UI_Main.transform.position.y - 185;
+        posx = gb_UI_Main.transform.position.x - 125;
+        posy = gb_UI_Main.transform.position.y - 125;
 
         gb_playing_prefad = new GameObject[gb_playing_Num];
 
@@ -298,7 +300,7 @@ public class Playing_AI : MonoBehaviour
             sw.WriteLine("类型: 失败");
         }
         sw.WriteLine("点击次数: " + game_chick);
-        sw.WriteLine("用时" + temp.GetComponent<Text>().text);
+        sw.WriteLine("用时" + strTime);
         sw.WriteLine("正确操作次数: " + game_chick_right);
         sw.WriteLine("错误操作次数: " + game_chick_error);
         //清空缓冲区
