@@ -248,3 +248,7 @@ G:\lanmao\demo\Temp\bin\Debug\nunit.framework.xml
 G:\lanmao\demo\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 G:\lanmao\demo\obj\Debug\Assembly-CSharp.dll
 G:\lanmao\demo\obj\Debug\Assembly-CSharp.pdb
+D:\Project\lanmao\demo\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\Project\lanmao\demo\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+D:\Project\lanmao\demo\obj\Debug\Assembly-CSharp.dll
+D:\Project\lanmao\demo\obj\Debug\Assembly-CSharp.pdb

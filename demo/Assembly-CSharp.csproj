@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\00\Button_短时记忆01.cs" />
+    <Compile Include="Assets\Script\00\Button_短时记忆02.cs" />
     <Compile Include="Assets\Script\01\Main_button_HowToPlay.cs" />
     <Compile Include="Assets\Script\01\Main_button_Play.cs" />
     <Compile Include="Assets\Script\01\Main_button_PlayAgain.cs" />
@@ -71,6 +72,15 @@
     <Compile Include="Assets\Script\01\Text_chick_error.cs" />
     <Compile Include="Assets\Script\01\Text_chick_right.cs" />
     <Compile Include="Assets\Script\01\Text_Timer.cs" />
+    <Compile Include="Assets\Script\02\Main_button_Play_02.cs" />
+    <Compile Include="Assets\Script\02\Main_button_PlayAgain_02.cs" />
+    <Compile Include="Assets\Script\02\Main_button_Reset_02.cs" />
+    <Compile Include="Assets\Script\02\Playing_AI_02.cs" />
+    <Compile Include="Assets\Script\02\Text_chick_02.cs" />
+    <Compile Include="Assets\Script\02\Text_chick_error_02.cs" />
+    <Compile Include="Assets\Script\02\Text_chick_level.cs" />
+    <Compile Include="Assets\Script\02\Text_chick_right_02.cs" />
+    <Compile Include="Assets\Script\02\Text_Timer_02.cs" />
     <Compile Include="Assets\Script\Button_PlayMoreGame.cs" />
     <None Include="Assets\resources\Material_And_Shader\01\reversible_face.shader" />
     <Reference Include="Unity.DocZh.Editor">

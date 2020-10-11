@@ -80,7 +80,7 @@ public class Playing_AI : MonoBehaviour
         posx = gb_UI_Main.transform.position.x - 125;
         posy = gb_UI_Main.transform.position.y - 125;
 
-        gb_playing_prefad = new GameObject[gb_playing_Num];
+        gb_playing_prefad = new GameObject[gb_prefab_Num];
 
         //预设初始化显示false
         for (int i = 1; i <= gb_prefab_Num; ++i)
