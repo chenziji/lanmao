@@ -1,0 +1,86 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class Main_button_Play_02 : MonoBehaviour, IPointerDownHandler
+{
+    private GameObject gb_UI_Text_level;
+    private GameObject gb_UI_Text_Timer;
+    private GameObject gb_UI_Text_chick;
+    private GameObject gb_UI_Text_chick_right;
+    private GameObject gb_UI_Text_chick_error;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        gb_UI_Text_level = GameObject.Find("level");
+        gb_UI_Text_level.SetActive(false);
+
+        gb_UI_Text_Timer = GameObject.Find("timer");
+        gb_UI_Text_Timer.SetActive(false);
+
+        gb_UI_Text_chick = GameObject.Find("chick");
+        gb_UI_Text_chick.SetActive(false);
+
+        gb_UI_Text_chick_right = GameObject.Find("chick_right");
+        gb_UI_Text_chick_right.SetActive(false);
+
+        gb_UI_Text_chick_error = GameObject.Find("chick_error");
+        gb_UI_Text_chick_error.SetActive(false);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    {
+        if (this.gameObject.activeInHierarchy == true)
+        {
+            this.gameObject.SetActive(false);
+        }
+
+        GameObject temp = GameObject.Find("Playing");
+
+        temp.GetComponent<Playing_AI_02>().gb_UI_Playing.SetActive(true);
+        temp.GetComponent<Playing_AI_02>().gb_UI_Main.SetActive(false);
+        temp.GetComponent<Playing_AI_02>().gb_bt_PlayMoreGame.SetActive(false);
+
+        //全局静态调用
+        //Playing_AI_02.Init();
+        //公有函数调用
+        //temp.GetComponent<Playing_AI_02>().Init();
+        //私有函数调用
+        //temp.SendMessage("Init");
+
+        temp.GetComponent<Playing_AI_02>().Init();
+
+        Playing_AI_02.game_state2 = 1;
+        Playing_AI_02.game_level2 = 1;
+
+        Playing_AI_02.game_chick = 0;
+        Playing_AI_02.game_chick_right = 0;
+        Playing_AI_02.game_chick_error = 0;
+
+        Playing_AI_02.m_Success = 0;
+
+        Playing_AI_02.iReverseA = 0;
+        Playing_AI_02.iReverseB = 0;
+        Playing_AI_02.gb_ReverseA = null;
+        Playing_AI_02.gb_ReverseB = null;
+
+
+        gb_UI_Text_level.SetActive(true);
+
+        gb_UI_Text_Timer.SetActive(true);
+        gb_UI_Text_Timer.SendMessage("Begin");
+
+        gb_UI_Text_chick.SetActive(true);
+        gb_UI_Text_chick_right.SetActive(true);
+        gb_UI_Text_chick_error.SetActive(true);
+    }
+}
