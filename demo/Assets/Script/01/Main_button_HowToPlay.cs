@@ -34,13 +34,13 @@ public class Main_button_HowToPlay : MonoBehaviour, IPointerEnterHandler,IPointe
 
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
-        if (this.gameObject.activeInHierarchy == true)
+        /*if (this.gameObject.activeInHierarchy == true)
         {
             this.gameObject.SetActive(false);
-        }
+        }*/
 
-        gb_UI_Main.SetActive(false);
-        gb_bt_Play.SetActive(false);
-        gb_bt_PlayMoreGame.SetActive(false);
+        //gb_UI_Main.SetActive(false);
+        //gb_bt_Play.SetActive(false);
+        //gb_bt_PlayMoreGame.SetActive(false);
     }
 }

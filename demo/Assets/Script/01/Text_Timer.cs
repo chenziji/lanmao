@@ -7,6 +7,8 @@ public class Text_Timer : MonoBehaviour
 {
     private GameObject gb_UI_Text_TimerBegin;
     float tBegin = 0;
+    private float fLastTime = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +20,16 @@ public class Text_Timer : MonoBehaviour
     {
         if (Playing_AI.game_state == 0)
         {
-            gb_UI_Text_TimerBegin.SetActive(false);
-            this.gameObject.SetActive(false);
+           /* if (Playing_AI.gb_UI_End.activeInHierarchy == true)
+            {
+                gb_UI_Text_TimerBegin.transform.localPosition = new Vector3(0, this.transform.localPosition.y + 20, 0);
+            }
+            else
+            {*/
+                gb_UI_Text_TimerBegin.SetActive(false);
+                this.gameObject.SetActive(false);
+            //}
+
             return;
         }
 
@@ -64,10 +74,23 @@ public class Text_Timer : MonoBehaviour
         //秒
         int sec = (int)(temp) - min * 60;
         tempStr = "时间: " + tempStr + " (" + min + "分" + sec + "秒)";
-        
+        if (fLastTime == 0)
+        {
+            fLastTime = temp;
+        }
 
         gb_UI_Text_TimerBegin.GetComponent<Text>().text = tempStr;
         Playing_AI.strTime = tempStr;
+
+        if (temp - fLastTime >= 1)
+        {
+            fLastTime = temp;
+
+            string strlog = "Round：M_Level1Round1Time: " + tempStr1.ToString();
+            //游戏时间
+            BCI_Socket.Instance.SendMsg(strlog);
+        }
+        
     }
 
     void Init()

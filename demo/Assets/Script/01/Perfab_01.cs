@@ -77,17 +77,22 @@ public class Perfab_01 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             Playing_AI.gb_ReverseA = gameObject;
             Playing_AI.iReverseA = _Num;
             Playing_AI.game_chick += 1;
+
+            BCI_Socket.Instance.SendMsg("M_MouseClick");
         }
         else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0 && Playing_AI.gb_ReverseB == null)
         {
             //延迟0.5秒
+            BCI_Socket.Instance.SendMsg("M_MouseClick");
             Playing_AI.game_chick += 1;
             if(Playing_AI.iReverseA == _Num)
             {
+                BCI_Socket.Instance.SendMsg("M_Match");
                 Playing_AI.game_chick_right += 1;
             }
             else
             {
+                BCI_Socket.Instance.SendMsg("M_Mismatch");
                 Playing_AI.game_chick_error += 1;
             }
 

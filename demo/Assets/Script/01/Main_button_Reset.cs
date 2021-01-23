@@ -23,5 +23,10 @@ public class Main_button_Reset : MonoBehaviour, IPointerDownHandler
         GameObject temp = GameObject.Find("Playing");
         temp.GetComponent<Playing_AI>().GameReset();
         Playing_AI.Log(false);
+
+        ++Playing_AI.game_reset;
+
+        //游戏失败
+        BCI_Socket.Instance.SendMsg("M_Retry");
     }
 }

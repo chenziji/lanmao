@@ -1,0 +1,33 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Text_chick : MonoBehaviour
+{
+    float tBegin = 0;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Playing_AI.game_state == 0)
+        {
+            this.gameObject.SetActive(false);
+            return;
+        }
+
+        string tempStr = Playing_AI.game_chick.ToString();
+        this.GetComponent<Text>().text = "总点击次数: " + tempStr;
+    }
+
+    void Begin()
+    {
+        tBegin = Time.time;
+    }
+}

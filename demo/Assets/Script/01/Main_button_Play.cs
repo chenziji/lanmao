@@ -26,6 +26,11 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
 
         gb_UI_Text_chick_error = GameObject.Find("chick_error");
         gb_UI_Text_chick_error.SetActive(false);
+
+        //初始化socket
+        BCI_Socket.Instance.Init();
+
+        BCI_Socket.Instance.SendMsg("M_Start");
     }
 
     // Update is called once per frame
@@ -51,10 +56,10 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
 
         GameObject temp = GameObject.Find("Playing");
 
-        temp.GetComponent<Playing_AI>().gb_UI_Playing.SetActive(true);
-        temp.GetComponent<Playing_AI>().gb_UI_Main.SetActive(false);
+        Playing_AI.gb_UI_Playing.SetActive(true);
+        Playing_AI.gb_UI_Main.SetActive(false);
         temp.GetComponent<Playing_AI>().gb_bt_HowToPlay.SetActive(false);
-        temp.GetComponent<Playing_AI>().gb_bt_PlayMoreGame.SetActive(false);
+        //temp.GetComponent<Playing_AI>().gb_bt_PlayMoreGame.SetActive(false);
 
         //共有函数调用
         temp.GetComponent<Playing_AI>().Init();
@@ -82,5 +87,11 @@ public class Main_button_Play : MonoBehaviour, IPointerEnterHandler,IPointerExit
         gb_UI_Text_chick.SetActive(true);
         gb_UI_Text_chick_right.SetActive(true);
         gb_UI_Text_chick_error.SetActive(true);
+
+        //隐藏logo
+        temp.GetComponent<Playing_AI>().gb_bt_logo01.SetActive(false);
+        temp.GetComponent<Playing_AI>().gb_bt_logo02.SetActive(false);
+        temp.GetComponent<Playing_AI>().gb_bt_logo03.SetActive(false);
+        temp.GetComponent<Playing_AI>().gb_bt_logo04.SetActive(false);
     }
 }

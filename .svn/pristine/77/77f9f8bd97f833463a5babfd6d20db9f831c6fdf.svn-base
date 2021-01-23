@@ -1,0 +1,89 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class Perfab_02 : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+{
+    //float speedZ = 30;
+
+
+    //调用其他脚本变量 非static
+    //GameObject a = GameObject.Find("Playing_AI");
+    //a.GetComponent<Playing_AI>().m_per_line_num = 1;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+
+    }
+
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+
+    }
+
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    {
+        string strName = this.GetComponent<Component>().name;
+        int index = strName.IndexOf('_');
+        strName = strName.Substring(index + 1, 2);
+        //string strMaterial = "Material_And_Shader/01/Material_" + strName;
+        //this.GetComponent<Image>().material = Resources.Load<Material>(strMaterial);
+
+        //更换图片
+        string strPicture = "picture/02/B" + strName;
+        this.GetComponent<Image>().sprite = Resources.Load<Sprite>(strPicture);
+
+        int _Num = 0;
+        int.TryParse(strName, out _Num);
+
+        if (Playing_AI.iReverseA == 0 && Playing_AI.gb_ReverseA == null)
+        {
+            Playing_AI.gb_ReverseA = gameObject;
+            Playing_AI.iReverseA = _Num;
+            Playing_AI.game_chick += 1;
+        }
+        else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB == 0 && Playing_AI.gb_ReverseB == null)
+        {
+            Playing_AI.gb_ReverseB = gameObject;
+            Playing_AI.iReverseB = _Num;
+            Playing_AI.game_chick += 1;
+        }
+        else if (Playing_AI.iReverseA != 0 && Playing_AI.iReverseB != 0 &&
+            Playing_AI.iReverseC == 0 && Playing_AI.gb_ReverseC == null)
+        {
+            Playing_AI.iReverseB = _Num;
+            Playing_AI.game_chick += 1;
+
+            if (Playing_AI.iReverseA == _Num && Playing_AI.iReverseB == _Num)
+            {
+                Playing_AI.game_chick_right += 1;
+            }
+            else
+            {
+                Playing_AI.game_chick_error += 1;
+            }
+
+            //延迟0.4秒
+            Invoke("Invoke", 0.4f);
+        }
+    }
+
+    void Invoke()
+    {
+        Playing_AI.gb_ReverseC = gameObject;
+    }
+}

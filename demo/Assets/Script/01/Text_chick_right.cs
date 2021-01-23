@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Text_chick_right : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,16 @@ public class Text_chick_right : MonoBehaviour
     {
         if (Playing_AI.game_state == 0)
         {
+            /* if (Playing_AI.gb_UI_End.activeInHierarchy == true)
+            {
+                this.transform.localPosition = new Vector3(0, this.transform.localPosition.y - 90, 0);
+            }
+            else
+            {*/
             this.gameObject.SetActive(false);
+            //}
+                
+           
             return;
         }
 

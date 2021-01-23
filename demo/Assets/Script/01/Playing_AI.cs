@@ -12,13 +12,22 @@ public class Playing_AI : MonoBehaviour
     public static int game_chick_right = 0;   //正确操作次数
     public static int game_chick_error = 0;   //错误操作次数
 
+    public static int game_reset = 0;   //重置次数
+    public static int game_success = 0; //成功通关次数
+    public static float game_AllTime = 0; //所有通关次数所用总时间
+    public static int game_Allchick = 0;   //所有通关次数所用总点击次数
+    public static int game_Allchick_right = 0;   //所有通关次数所用总点击成功次数
+    public static int game_Allchick_error = 0;   //所有通关次数所用总点击失败次数
+
     public static int gb_prefab_Num = 18;   //预设数量
     public static int gb_playing_Num = 64;  //游戏对象数量
 
     public static int iReverseA = 0;  //A翻转的ID
     public static int iReverseB = 0;  //B翻转的ID
+    public static int iReverseC = 0;  //C翻转的ID
     public static GameObject gb_ReverseA;  //A翻转的对象
     public static GameObject gb_ReverseB;  //B翻转的对象
+    public static GameObject gb_ReverseC;  //C翻转的对象
 
     public static int m_Success = 0;   //成功的个数
 
@@ -26,7 +35,7 @@ public class Playing_AI : MonoBehaviour
 
     int m_per_line_num = 8;    //每排数量
     float posx = 0, posy = 0; //初始坐标
-    float wight = 35, hight = 35; //单个元素宽高间隔
+    float wight = 86, hight = 83; //单个元素宽高间隔
     IList<int> listRandom = new List<int>(gb_playing_Num);  //随机表
 
     private GameObject gb_GameObject_father;//父类
@@ -41,9 +50,19 @@ public class Playing_AI : MonoBehaviour
     public GameObject gb_bt_PlayMoreEnd;
     public GameObject gb_bt_Reset;
 
-    public GameObject gb_UI_Main;
-    public GameObject gb_UI_Playing;
-    public GameObject gb_UI_End;
+    public static GameObject gb_UI_Main;
+    public static GameObject gb_UI_Playing;
+    public static GameObject gb_UI_End;
+
+    public GameObject gb_Text_end_Timer;
+    public GameObject gb_Text_end_chick;
+    public GameObject gb_Text_end_chick_right;
+    public GameObject gb_Text_end_chick_error;
+
+    public GameObject gb_bt_logo01;
+    public GameObject gb_bt_logo02;
+    public GameObject gb_bt_logo03;
+    public GameObject gb_bt_logo04;
 
     string str1 = "";
     string str2 = "Sprite_";
@@ -65,11 +84,26 @@ public class Playing_AI : MonoBehaviour
         gb_UI_Playing = GameObject.Find("playing");
         gb_UI_End = GameObject.Find("end");
 
+        gb_Text_end_Timer = GameObject.Find("timer2");
+        gb_Text_end_chick = GameObject.Find("chick2");
+        gb_Text_end_chick_right = GameObject.Find("chick_right2");
+        gb_Text_end_chick_error = GameObject.Find("chick_error2");
+
+        gb_bt_logo01 = GameObject.Find("main_logo01");
+        gb_bt_logo02 = GameObject.Find("main_logo02");
+        gb_bt_logo03 = GameObject.Find("main_logo03");
+        gb_bt_logo04 = GameObject.Find("main_logo04");
+
         gb_UI_Playing.SetActive(false);
         gb_UI_End.SetActive(false);
         gb_bt_PlayAgain.SetActive(false);
         gb_bt_PlayMoreEnd.SetActive(false);
         gb_bt_Reset.SetActive(false);
+
+        gb_Text_end_Timer.SetActive(false);
+        gb_Text_end_chick.SetActive(false);
+        gb_Text_end_chick_right.SetActive(false);
+        gb_Text_end_chick_error.SetActive(false);
 
         if (gb_UI_Playing)
         {
@@ -77,8 +111,8 @@ public class Playing_AI : MonoBehaviour
         }
 
 
-        posx = gb_UI_Main.transform.position.x - 125;
-        posy = gb_UI_Main.transform.position.y - 125;
+        posx = gb_UI_Main.transform.position.x - 460;
+        posy = gb_UI_Main.transform.position.y - 295;
 
         gb_playing_prefad = new GameObject[gb_prefab_Num];
 
@@ -112,9 +146,9 @@ public class Playing_AI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.mousePosition.x;
-        float vertical = Input.mousePosition.y;
-        print("【x】:" + horizontal + "【y】:" + vertical);
+        //float horizontal = Input.mousePosition.x;
+       // float vertical = Input.mousePosition.y;
+        //print("【x】:" + horizontal + "【y】:" + vertical);
 
         if (game_state == 1)
         {
@@ -136,7 +170,8 @@ public class Playing_AI : MonoBehaviour
                         Effect();
 
                         ++m_Success;
-                        if(m_Success >= gb_playing_Num / 2)
+                        if (m_Success >= gb_playing_Num / 2)
+                        //if (m_Success >= 1)
                         {
                             //全部翻盘，结束游戏 //延迟播放特效 大约0.5s
                             Invoke("GameEnd", 0.5f);
@@ -159,6 +194,8 @@ public class Playing_AI : MonoBehaviour
 
     public void Init()
     {
+        BCI_Socket.Instance.SendMsg("M_Level1Round1");
+
         gb_GameObject_father = GameObject.Find("GameObject");
         gb_bt_Reset.SetActive(true);
 
@@ -225,6 +262,41 @@ public class Playing_AI : MonoBehaviour
         }
     }
 
+    //关闭程序
+    void OnApplicationQuit()
+    {
+        //游戏结束
+        BCI_Socket.Instance.SendMsg("M_End");
+
+        //最后发送的游戏统计信息”Statistics:
+        //游戏每关卡重试的次数
+        BCI_Socket.Instance.SendMsg("M_Level1RetryTimes:" + game_reset.ToString());
+
+        if (game_success != 0)
+        {
+            //每关卡平均所用的时间（以秒为单位）
+            BCI_Socket.Instance.SendMsg("M_Level1AverageTime:" + (game_AllTime / game_success).ToString());
+            //每关卡鼠标的平均点击次数
+            BCI_Socket.Instance.SendMsg("M_Level1AverageMouseClickTimes:" + (game_Allchick / game_success).ToString());
+            //每关卡牌面匹配正确的平均次数
+            BCI_Socket.Instance.SendMsg("M_Level1AverageMatchTimes:" + (game_Allchick_right / game_success).ToString());
+            //每关卡牌面匹配错误的平均次数
+            BCI_Socket.Instance.SendMsg("M_Level1AverageMisatchTimes:" + (game_Allchick_error / game_success).ToString());
+        }
+        else
+        {
+            //每关卡平均所用的时间（以秒为单位）
+            BCI_Socket.Instance.SendMsg("M_Level1AverageTime:0");
+            //每关卡鼠标的平均点击次数
+            BCI_Socket.Instance.SendMsg("M_Level1AverageMouseClickTimes:0");
+            //每关卡牌面匹配正确的平均次数
+            BCI_Socket.Instance.SendMsg("M_Level1AverageMatchTimes:0");
+            //每关卡牌面匹配错误的平均次数
+            BCI_Socket.Instance.SendMsg("M_Level1AverageMisatchTimes:0");
+        }
+       
+    }
+
     void GameEnd()
     {
         Log(true);
@@ -244,7 +316,37 @@ public class Playing_AI : MonoBehaviour
         gb_UI_Playing.SetActive(false);
         gb_bt_Reset.SetActive(false);
 
+
+        //显示结算
+        gb_Text_end_Timer.SetActive(true);
+        gb_Text_end_chick.SetActive(true);
+        gb_Text_end_chick_right.SetActive(true);
+        gb_Text_end_chick_error.SetActive(true);
+
+        gb_Text_end_Timer.GetComponent<Text>().text = strTime;
+        gb_Text_end_chick.GetComponent<Text>().text = "总点击次数: " + game_chick.ToString();
+        gb_Text_end_chick_right.GetComponent<Text>().text = "正确操作次数: " + game_chick_right.ToString();
+        gb_Text_end_chick_error.GetComponent<Text>().text = "错误操作次数: " + game_chick_error.ToString();
+
         game_state = 0;
+
+        ++game_success;
+
+        game_AllTime += float.Parse(strTime);
+        game_Allchick += game_chick;
+        game_Allchick_right += game_chick_right;
+        game_Allchick_error += game_chick_error;
+
+
+        //每关卡每回合鼠标的点击次数
+        BCI_Socket.Instance.SendMsg("M_Level1Round1MouseClickTimes:" + game_chick.ToString());
+        //每关卡每回合牌面匹配正确的次数
+        BCI_Socket.Instance.SendMsg("M_Level1Round2MatchTimes:" + game_chick_right.ToString());
+        //每关卡每回合牌面匹配错误的次数
+        BCI_Socket.Instance.SendMsg("M_Level1Round1MisatchTimes:" + game_chick_error.ToString());
+
+        //游戏通关
+        BCI_Socket.Instance.SendMsg("M_GamePass");
     }
 
     public void GameReset()
@@ -260,6 +362,18 @@ public class Playing_AI : MonoBehaviour
         gb_bt_PlayMoreGame.SetActive(true);
         gb_bt_HowToPlay.SetActive(true);
         gb_bt_Reset.SetActive(false);
+
+        //隐藏结算
+        gb_Text_end_Timer.SetActive(false);
+        gb_Text_end_chick.SetActive(false);
+        gb_Text_end_chick_right.SetActive(false);
+        gb_Text_end_chick_error.SetActive(false);
+
+        //显示logo
+        gb_bt_logo01.SetActive(true);
+        gb_bt_logo02.SetActive(true);
+        gb_bt_logo03.SetActive(true);
+        gb_bt_logo04.SetActive(true);
 
         //隐藏所有游戏对象
         for (int i = 0; i < gb_playing_Num; ++i)
